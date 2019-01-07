@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {
+  Drawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { DRAWER_WIDTH } from "../../consts";
 
 const styles = theme => ({
