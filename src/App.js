@@ -47,7 +47,12 @@ const menus = [
         label: "Address"
       },
       { id: "city", numeric: false, disablePadding: false, label: "City" },
-      { id: "options", numeric: false, disablePadding: false, label: "Options" }
+      {
+        id: "facilities",
+        numeric: false,
+        disablePadding: false,
+        label: "Facilities"
+      }
     ],
     orderBy: "name"
   },
