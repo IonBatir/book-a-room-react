@@ -16,7 +16,7 @@ import {
   IconButton,
   Tooltip
 } from "@material-ui/core";
-import { DeleteIcon, FilterListIcon } from "@material-ui/icons/Delete";
+import { Delete, FilterList } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 
@@ -160,13 +160,13 @@ let EnhancedTableToolbar = props => {
         {numSelected > 0 ? (
           <Tooltip title="Delete">
             <IconButton aria-label="Delete">
-              <DeleteIcon />
+              <Delete />
             </IconButton>
           </Tooltip>
         ) : (
           <Tooltip title="Filter list">
             <IconButton aria-label="Filter list">
-              <FilterListIcon />
+              <FilterList />
             </IconButton>
           </Tooltip>
         )}
