@@ -16,7 +16,7 @@ import {
   IconButton,
   Tooltip
 } from "@material-ui/core";
-import { Delete, FilterList } from "@material-ui/icons";
+import { Add, Edit, Delete } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import { lighten } from "@material-ui/core/styles/colorManipulator";
 
@@ -125,7 +125,7 @@ const toolbarStyles = theme => ({
           backgroundColor: theme.palette.secondary.dark
         },
   spacer: {
-    flex: "1 1 100%"
+    flex: "1 1 90%"
   },
   actions: {
     color: theme.palette.text.secondary
@@ -158,15 +158,24 @@ let EnhancedTableToolbar = props => {
       <div className={classes.spacer} />
       <div className={classes.actions}>
         {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
-              <Delete />
-            </IconButton>
-          </Tooltip>
+          <div>
+            {numSelected === 1 && (
+              <Tooltip title="Edit">
+                <IconButton aria-label="Edit">
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            )}
+            <Tooltip title="Delete">
+              <IconButton aria-label="Delete">
+                <Delete />
+              </IconButton>
+            </Tooltip>
+          </div>
         ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterList />
+          <Tooltip title="Add">
+            <IconButton aria-label="Add">
+              <Add />
             </IconButton>
           </Tooltip>
         )}
