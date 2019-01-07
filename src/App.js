@@ -16,16 +16,21 @@ const styles = theme => ({
   }
 });
 
-const App = ({ classes }) => (
-  <div className={classes.root}>
-    <Header />
-    <Drawer />
-    <main className={classes.content}>
-      <div className={classes.toolbar} />
-      <Table />
-    </main>
-  </div>
-);
+class App extends React.Component {
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <Header />
+        <Drawer />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Table />
+        </main>
+      </div>
+    );
+  }
+}
 
 App.propTypes = {
   classes: PropTypes.object.isRequired
