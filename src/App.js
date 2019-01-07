@@ -36,7 +36,18 @@ const menus = [
       { id: "options", numeric: false, disablePadding: false, label: "Options" }
     ]
   },
-  { id: 1, label: "Rooms", icon: Hotel }
+  {
+    id: 1,
+    label: "Rooms",
+    icon: Hotel,
+    rows: [
+      { id: "hotel", numeric: false, disablePadding: true, label: "Hotel" },
+      { id: "type", numeric: false, disablePadding: false, label: "Type" },
+      { id: "number", numeric: false, disablePadding: false, label: "Number" },
+      { id: "floor", numeric: true, disablePadding: false, label: "Floor" },
+      { id: "price", numeric: false, disablePadding: false, label: "Price" }
+    ]
+  }
 ];
 
 class App extends React.Component {
