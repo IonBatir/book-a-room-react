@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { Header, Drawer } from "./components/layouts";
+import { Table } from "./components";
 
 const styles = theme => ({
   root: {
@@ -21,7 +22,7 @@ const App = ({ classes }) => (
     <Drawer />
     <main className={classes.content}>
       <div className={classes.toolbar} />
-      <h1>Main</h1>
+      <Table />
     </main>
   </div>
 );
