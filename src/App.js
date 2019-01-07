@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { CircularProgress } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { LocationCity, Hotel, RateReview } from "@material-ui/icons";
 import { Header, Drawer } from "./components/layouts";
 import { Table } from "./components";
+import { getHotels } from "./api";
 
 const styles = theme => ({
   root: {
@@ -14,6 +16,13 @@ const styles = theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3
+  },
+  spinner: {
+    display: "block",
+    position: "fixed",
+    zIndex: 1031,
+    top: 300,
+    right: "calc(50% - 25px)"
   }
 });
 
@@ -24,8 +33,13 @@ const menus = [
     icon: LocationCity,
     rows: [
       { id: "name", numeric: false, disablePadding: true, label: "Name" },
-      { id: "stars", numeric: true, disablePadding: false, label: "Stars" },
-      { id: "floors", numeric: true, disablePadding: false, label: "Floors" },
+      { id: "nr_stars", numeric: true, disablePadding: false, label: "Stars" },
+      {
+        id: "nr_floors",
+        numeric: true,
+        disablePadding: false,
+        label: "Floors"
+      },
       {
         id: "address",
         numeric: false,
@@ -45,7 +59,7 @@ const menus = [
       { id: "hotel", numeric: false, disablePadding: true, label: "Hotel" },
       { id: "type", numeric: false, disablePadding: false, label: "Type" },
       { id: "number", numeric: false, disablePadding: false, label: "Number" },
-      { id: "floor", numeric: true, disablePadding: false, label: "Floor" },
+      { id: "nr_floor", numeric: true, disablePadding: false, label: "Floor" },
       { id: "price", numeric: true, disablePadding: false, label: "Price" }
     ],
     orderBy: "hotel"
@@ -82,6 +96,18 @@ class App extends React.Component {
 
   handleSelectMenu = menu => this.setState({ menu });
 
+  componentDidMount() {
+    this.setState({ loading: true });
+    getHotels()
+      .then(response => {
+        this.setState({ loading: false, data: response.hotels });
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+        console.log(error);
+      });
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -94,6 +120,9 @@ class App extends React.Component {
             menu={menus.find(menu => menu.id === this.state.menu)}
             data={this.state.data}
           />
+          {this.state.loading && (
+            <CircularProgress className={classes.spinner} />
+          )}
         </main>
       </div>
     );
