@@ -209,10 +209,9 @@ class EnhancedTable extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.menu.orderBy !== state.orderBy)
-      return { orderBy: props.menu.orderBy };
-    if (props.data !== state.data) return { data: props.data };
-    return null;
+    return props.data !== state.data
+      ? { data: props.data, orderBy: props.menu.orderBy }
+      : null;
   }
 
   handleRequestSort = (event, property) => {

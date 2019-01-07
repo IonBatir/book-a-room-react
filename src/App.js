@@ -2,7 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { CircularProgress } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { LocationCity, Hotel, RateReview } from "@material-ui/icons";
+import {
+  LocationCity,
+  Hotel,
+  RateReview,
+  Restaurant,
+  Wifi,
+  DirectionsCar,
+  LocalParking,
+  LocalLaundryService
+} from "@material-ui/icons";
 import { Header, Drawer } from "./components/layouts";
 import { Table } from "./components";
 import { getHotels } from "./api";
@@ -105,7 +114,24 @@ class App extends React.Component {
     this.setState({ loading: true });
     getHotels()
       .then(response => {
-        this.setState({ loading: false, data: response.hotels });
+        const data = response.hotels.map(hotel => ({
+          id: hotel.id,
+          name: hotel.name,
+          nr_stars: hotel.nr_stars,
+          nr_floors: hotel.nr_floors,
+          address: hotel.address,
+          city: hotel.city,
+          facilities: (
+            <React.Fragment>
+              {hotel.restaurant === "1" && <Restaurant />}
+              {hotel.wifi === "1" && <Wifi />}
+              {hotel.car_hire === "1" && <DirectionsCar />}
+              {hotel.parking === "1" && <LocalParking />}
+              {hotel.laundry === "1" && <LocalLaundryService />}
+            </React.Fragment>
+          )
+        }));
+        this.setState({ loading: false, data });
       })
       .catch(error => {
         this.setState({ loading: false });
