@@ -45,15 +45,6 @@ function getSorting(order, orderBy) {
     : (a, b) => -desc(a, b, orderBy);
 }
 
-const rows = [
-  { id: "name", numeric: false, disablePadding: true, label: "Name" },
-  { id: "stars", numeric: true, disablePadding: false, label: "Stars" },
-  { id: "floors", numeric: true, disablePadding: false, label: "Floors" },
-  { id: "address", numeric: false, disablePadding: false, label: "Address" },
-  { id: "city", numeric: false, disablePadding: false, label: "City" },
-  { id: "options", numeric: false, disablePadding: false, label: "Options" }
-];
-
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
@@ -65,7 +56,8 @@ class EnhancedTableHead extends React.Component {
       order,
       orderBy,
       numSelected,
-      rowCount
+      rowCount,
+      rows
     } = this.props;
 
     return (
@@ -143,7 +135,7 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes } = props;
+  const { numSelected, classes, menuLabel } = props;
 
   return (
     <Toolbar
@@ -158,7 +150,7 @@ let EnhancedTableToolbar = props => {
           </Typography>
         ) : (
           <Typography variant="h6" id="tableTitle">
-            Hotels
+            {menuLabel}
           </Typography>
         )}
       </div>
@@ -273,14 +265,17 @@ class EnhancedTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
-    const { classes } = this.props;
+    const { classes, menu } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          menuLabel={menu.label}
+          numSelected={selected.length}
+        />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -290,6 +285,7 @@ class EnhancedTable extends React.Component {
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
               rowCount={data.length}
+              rows={menu.rows}
             />
             <TableBody>
               {stableSort(data, getSorting(order, orderBy))
@@ -322,7 +318,7 @@ class EnhancedTable extends React.Component {
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={7} />
+                  <TableCell colSpan={menu.rows.length + 1} />
                 </TableRow>
               )}
             </TableBody>

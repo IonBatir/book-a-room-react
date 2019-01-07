@@ -24,7 +24,7 @@ const styles = theme => ({
   }
 });
 
-const Menu = ({ classes, pages }) => (
+const Menu = ({ classes, menus, handleSelectMenu }) => (
   <Drawer
     className={classes.drawer}
     variant="permanent"
@@ -36,10 +36,15 @@ const Menu = ({ classes, pages }) => (
     <div className={classes.toolbar} />
     <Divider />
     <List>
-      {pages.map(page => (
-        <ListItem button divider key={page.id}>
+      {menus.map(menu => (
+        <ListItem
+          button
+          divider
+          key={menu.id}
+          onClick={() => handleSelectMenu(menu.id)}
+        >
           <ListItemIcon>
-            <page.icon />
+            <menu.icon />
           </ListItemIcon>
         </ListItem>
       ))}

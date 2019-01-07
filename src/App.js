@@ -17,8 +17,25 @@ const styles = theme => ({
   }
 });
 
-const pages = [
-  { id: 0, label: "Hotels", icon: LocationCity },
+const menus = [
+  {
+    id: 0,
+    label: "Hotels",
+    icon: LocationCity,
+    rows: [
+      { id: "name", numeric: false, disablePadding: true, label: "Name" },
+      { id: "stars", numeric: true, disablePadding: false, label: "Stars" },
+      { id: "floors", numeric: true, disablePadding: false, label: "Floors" },
+      {
+        id: "address",
+        numeric: false,
+        disablePadding: false,
+        label: "Address"
+      },
+      { id: "city", numeric: false, disablePadding: false, label: "City" },
+      { id: "options", numeric: false, disablePadding: false, label: "Options" }
+    ]
+  },
   { id: 1, label: "Rooms", icon: Hotel }
 ];
 
@@ -26,18 +43,22 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 0
+      loading: false,
+      menu: 0
     };
   }
+
+  handleSelectMenu = menu => this.setState({ menu });
+
   render() {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Header />
-        <Drawer pages={pages} />
+        <Drawer menus={menus} handleSelectMenu={this.handleSelectMenu} />
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Table />
+          <Table menu={menus.find(menu => menu.id === this.state.menu)} />
         </main>
       </div>
     );
