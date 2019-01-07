@@ -70,6 +70,18 @@ const menus = [
   }
 ];
 
+const data = [
+  {
+    id: 0,
+    name: "Grand Hotel",
+    stars: 5,
+    floors: 10,
+    address: "Stefan cel Mare",
+    city: "Chișinău",
+    options: ""
+  }
+];
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -89,7 +101,10 @@ class App extends React.Component {
         <Drawer menus={menus} handleSelectMenu={this.handleSelectMenu} />
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Table menu={menus.find(menu => menu.id === this.state.menu)} />
+          <Table
+            menu={menus.find(menu => menu.id === this.state.menu)}
+            data={data}
+          />
         </main>
       </div>
     );
