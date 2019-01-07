@@ -6,7 +6,6 @@ import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import { LocationCity } from "@material-ui/icons";
 import { DRAWER_WIDTH } from "../../consts";
 
 const styles = theme => ({
@@ -25,7 +24,7 @@ const styles = theme => ({
   }
 });
 
-const Menu = ({ classes }) => (
+const Menu = ({ classes, pages }) => (
   <Drawer
     className={classes.drawer}
     variant="permanent"
@@ -37,10 +36,10 @@ const Menu = ({ classes }) => (
     <div className={classes.toolbar} />
     <Divider />
     <List>
-      {[{ id: 0, label: "Hotels", icon: LocationCity }].map(menu => (
-        <ListItem button divider key={menu.id}>
+      {pages.map(page => (
+        <ListItem button divider key={page.id}>
           <ListItemIcon>
-            <menu.icon />
+            <page.icon />
           </ListItemIcon>
         </ListItem>
       ))}
