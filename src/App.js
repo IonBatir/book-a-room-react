@@ -34,7 +34,8 @@ const menus = [
       },
       { id: "city", numeric: false, disablePadding: false, label: "City" },
       { id: "options", numeric: false, disablePadding: false, label: "Options" }
-    ]
+    ],
+    orderBy: "name"
   },
   {
     id: 1,
@@ -46,7 +47,8 @@ const menus = [
       { id: "number", numeric: false, disablePadding: false, label: "Number" },
       { id: "floor", numeric: true, disablePadding: false, label: "Floor" },
       { id: "price", numeric: true, disablePadding: false, label: "Price" }
-    ]
+    ],
+    orderBy: "hotel"
   },
   {
     id: 2,
@@ -63,7 +65,8 @@ const menus = [
       { id: "review", numeric: false, disablePadding: false, label: "Review" },
       { id: "mark", numeric: true, disablePadding: false, label: "Mark" },
       { id: "date", numeric: false, disablePadding: false, label: "Date" }
-    ]
+    ],
+    orderBy: "hotel"
   }
 ];
 

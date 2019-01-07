@@ -195,24 +195,33 @@ const styles = theme => ({
 });
 
 class EnhancedTable extends React.Component {
-  state = {
-    order: "asc",
-    orderBy: "name",
-    selected: [],
-    data: [
-      {
-        id: 0,
-        name: "Grand Hotel",
-        stars: 5,
-        floors: 10,
-        address: "Stefan cel Mare",
-        city: "Chișinău",
-        options: ""
-      }
-    ],
-    page: 0,
-    rowsPerPage: 5
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      order: "asc",
+      orderBy: props.menu.orderBy,
+      selected: [],
+      data: [
+        {
+          id: 0,
+          name: "Grand Hotel",
+          stars: 5,
+          floors: 10,
+          address: "Stefan cel Mare",
+          city: "Chișinău",
+          options: ""
+        }
+      ],
+      page: 0,
+      rowsPerPage: 5
+    };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    return props.menu.orderBy !== state.orderBy
+      ? { orderBy: props.menu.orderBy }
+      : null;
+  }
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
