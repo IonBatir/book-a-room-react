@@ -264,6 +264,17 @@ class EnhancedTable extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
+  renderRow = item => {
+    let row = [];
+    for (let property = 2; property < Object.keys(item).length; property++)
+      row.push(
+        <TableCell key={property} align="right">
+          {item[Object.keys(item)[property]]}
+        </TableCell>
+      );
+    return row;
+  };
+
   render() {
     const { classes, menu } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -290,29 +301,25 @@ class EnhancedTable extends React.Component {
             <TableBody>
               {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(hotel => {
-                  const isSelected = this.isSelected(hotel.id);
+                .map(item => {
+                  const isSelected = this.isSelected(item.id);
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, hotel.id)}
+                      onClick={event => this.handleClick(event, item.id)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={hotel.id}
+                      key={item.id}
                       selected={isSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
                       <TableCell component="th" scope="row" padding="none">
-                        {hotel.name}
+                        {item[Object.keys(item)[1]]}
                       </TableCell>
-                      <TableCell align="right">{hotel.stars}</TableCell>
-                      <TableCell align="right">{hotel.floors}</TableCell>
-                      <TableCell align="right">{hotel.address}</TableCell>
-                      <TableCell align="right">{hotel.city}</TableCell>
-                      <TableCell align="right">{hotel.options}</TableCell>
+                      {this.renderRow(item)}
                     </TableRow>
                   );
                 })}

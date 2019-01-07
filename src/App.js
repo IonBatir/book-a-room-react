@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { LocationCity, Hotel } from "@material-ui/icons";
+import { LocationCity, Hotel, RateReview } from "@material-ui/icons";
 import { Header, Drawer } from "./components/layouts";
 import { Table } from "./components";
 
@@ -45,7 +45,24 @@ const menus = [
       { id: "type", numeric: false, disablePadding: false, label: "Type" },
       { id: "number", numeric: false, disablePadding: false, label: "Number" },
       { id: "floor", numeric: true, disablePadding: false, label: "Floor" },
-      { id: "price", numeric: false, disablePadding: false, label: "Price" }
+      { id: "price", numeric: true, disablePadding: false, label: "Price" }
+    ]
+  },
+  {
+    id: 2,
+    label: "Reviews",
+    icon: RateReview,
+    rows: [
+      { id: "hotel", numeric: false, disablePadding: true, label: "Hotel" },
+      {
+        id: "customer",
+        numeric: false,
+        disablePadding: false,
+        label: "Customer"
+      },
+      { id: "review", numeric: false, disablePadding: false, label: "Review" },
+      { id: "mark", numeric: true, disablePadding: false, label: "Mark" },
+      { id: "date", numeric: false, disablePadding: false, label: "Date" }
     ]
   }
 ];
