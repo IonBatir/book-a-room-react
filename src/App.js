@@ -13,8 +13,8 @@ import {
   LocalLaundryService
 } from "@material-ui/icons";
 import { Header, Drawer } from "./components/layouts";
-import { Table } from "./components";
-import { getHotels } from "./api";
+import { Table, Snackbar } from "./components";
+import { getHotels, deleteHotel } from "./api";
 
 const styles = theme => ({
   root: {
@@ -102,15 +102,23 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      openSnackbar: false,
+      variantSnackbar: "",
+      messageSnackbar: "",
       loading: false,
       menu: 0,
       data: []
     };
   }
 
-  handleSelectMenu = menu => this.setState({ menu });
+  resetSnackbar = () =>
+    this.setState({
+      openSnackbar: false,
+      variantSnackbar: "",
+      messageSnackbar: ""
+    });
 
-  componentDidMount() {
+  fetch = () => {
     this.setState({ loading: true });
     getHotels()
       .then(response => {
@@ -134,10 +142,47 @@ class App extends React.Component {
         this.setState({ loading: false, data });
       })
       .catch(error => {
-        this.setState({ loading: false });
-        console.log(error);
+        this.setState({
+          openSnackbar: true,
+          variantSnackbar: "error",
+          messageSnackbar: "Sorry, something went wrong. Please try again!",
+          loading: false
+        });
       });
+  };
+
+  componentDidMount() {
+    this.fetch();
   }
+
+  handleSelectMenu = menu => this.setState({ menu });
+
+  handleDeleteItems = items => {
+    items.forEach(item => {
+      this.resetSnackbar();
+      this.setState({ loading: true });
+      deleteHotel(item)
+        .then(response => {
+          this.setState({
+            openSnackbar: true,
+            variantSnackbar: "success",
+            messageSnackbar: response.message,
+            loading: false
+          });
+          this.fetch();
+        })
+        .catch(error => {
+          this.setState({
+            openSnackbar: true,
+            variantSnackbar: "error",
+            messageSnackbar: "Sorry, something went wrong. Please try again!",
+            loading: false
+          });
+        });
+    });
+  };
+
+  handleCloseSnackbar = () => this.setState({ openSnackbar: false });
 
   render() {
     const { classes } = this.props;
@@ -150,7 +195,16 @@ class App extends React.Component {
           <Table
             menu={menus.find(menu => menu.id === this.state.menu)}
             data={this.state.data}
+            handleDeleteItems={this.handleDeleteItems}
           />
+          {this.state.openSnackbar && (
+            <Snackbar
+              open={this.state.openSnackbar}
+              variant={this.state.variantSnackbar}
+              message={this.state.messageSnackbar}
+              handleClose={this.handleCloseSnackbar}
+            />
+          )}
           {this.state.loading && (
             <CircularProgress className={classes.spinner} />
           )}
