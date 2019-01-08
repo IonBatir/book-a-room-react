@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import { CircularProgress } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import {
-  LocationCity,
-  Hotel,
-  RateReview,
   Restaurant,
   Wifi,
   DirectionsCar,
@@ -14,7 +11,8 @@ import {
 } from "@material-ui/icons";
 import { Header, Drawer } from "./components/layouts";
 import { Table, Snackbar } from "./components";
-import { getHotels, deleteHotel } from "./api";
+import { fetchItems, updateItem, addItem, deleteItem } from "./api";
+import { menus } from "./consts";
 
 const styles = theme => ({
   root: {
@@ -35,73 +33,11 @@ const styles = theme => ({
   }
 });
 
-const menus = [
-  {
-    id: 0,
-    label: "Hotels",
-    icon: LocationCity,
-    rows: [
-      { id: "name", numeric: false, disablePadding: true, label: "Name" },
-      { id: "nr_stars", numeric: true, disablePadding: false, label: "Stars" },
-      {
-        id: "nr_floors",
-        numeric: true,
-        disablePadding: false,
-        label: "Floors"
-      },
-      {
-        id: "address",
-        numeric: false,
-        disablePadding: false,
-        label: "Address"
-      },
-      { id: "city", numeric: false, disablePadding: false, label: "City" },
-      {
-        id: "facilities",
-        numeric: false,
-        disablePadding: false,
-        label: "Facilities"
-      }
-    ],
-    orderBy: "name"
-  },
-  {
-    id: 1,
-    label: "Rooms",
-    icon: Hotel,
-    rows: [
-      { id: "hotel", numeric: false, disablePadding: true, label: "Hotel" },
-      { id: "type", numeric: false, disablePadding: false, label: "Type" },
-      { id: "number", numeric: false, disablePadding: false, label: "Number" },
-      { id: "nr_floor", numeric: true, disablePadding: false, label: "Floor" },
-      { id: "price", numeric: true, disablePadding: false, label: "Price" }
-    ],
-    orderBy: "hotel"
-  },
-  {
-    id: 2,
-    label: "Reviews",
-    icon: RateReview,
-    rows: [
-      { id: "hotel", numeric: false, disablePadding: true, label: "Hotel" },
-      {
-        id: "customer",
-        numeric: false,
-        disablePadding: false,
-        label: "Customer"
-      },
-      { id: "review", numeric: false, disablePadding: false, label: "Review" },
-      { id: "mark", numeric: true, disablePadding: false, label: "Mark" },
-      { id: "date", numeric: false, disablePadding: false, label: "Date" }
-    ],
-    orderBy: "hotel"
-  }
-];
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      openModal: false,
       openSnackbar: false,
       variantSnackbar: "",
       messageSnackbar: "",
@@ -111,57 +47,54 @@ class App extends React.Component {
     };
   }
 
-  resetSnackbar = () =>
-    this.setState({
-      openSnackbar: false,
-      variantSnackbar: "",
-      messageSnackbar: ""
-    });
-
-  fetch = () => {
+  fetch = menuId => {
     this.setState({ loading: true });
-    getHotels()
+    const currentMenu = menus.find(menu => menu.id === menuId);
+    fetchItems(currentMenu.endpoint)
       .then(response => {
-        const data = response.hotels.map(hotel => ({
-          id: hotel.id,
-          name: hotel.name,
-          nr_stars: hotel.nr_stars,
-          nr_floors: hotel.nr_floors,
-          address: hotel.address,
-          city: hotel.city,
-          facilities: (
-            <React.Fragment>
-              {hotel.restaurant === "1" && <Restaurant />}
-              {hotel.wifi === "1" && <Wifi />}
-              {hotel.car_hire === "1" && <DirectionsCar />}
-              {hotel.parking === "1" && <LocalParking />}
-              {hotel.laundry === "1" && <LocalLaundryService />}
-            </React.Fragment>
-          )
-        }));
+        let data;
+        switch (currentMenu.id) {
+          case 0:
+            data = response.hotels.map(hotel => ({
+              id: hotel.id,
+              name: hotel.name,
+              nr_stars: hotel.nr_stars,
+              nr_floors: hotel.nr_floors,
+              address: hotel.address,
+              city: hotel.city,
+              facilities: (
+                <React.Fragment>
+                  {hotel.restaurant === "1" && <Restaurant />}
+                  {hotel.wifi === "1" && <Wifi />}
+                  {hotel.car_hire === "1" && <DirectionsCar />}
+                  {hotel.parking === "1" && <LocalParking />}
+                  {hotel.laundry === "1" && <LocalLaundryService />}
+                </React.Fragment>
+              )
+            }));
+            break;
+          default:
+            data = response;
+        }
         this.setState({ loading: false, data });
       })
       .catch(error => {
         this.setState({
           openSnackbar: true,
           variantSnackbar: "error",
-          messageSnackbar: "Sorry, something went wrong. Please try again!",
+          messageSnackbar:
+            error.response.data.message ||
+            "Sorry, something went wrong. Please try again!",
+          data: [],
           loading: false
         });
       });
   };
 
-  componentDidMount() {
-    this.fetch();
-  }
-
-  handleSelectMenu = menu => this.setState({ menu });
-
   handleDeleteItems = items => {
     items.forEach(item => {
-      this.resetSnackbar();
       this.setState({ loading: true });
-      deleteHotel(item)
+      deleteItem(menus.find(menu => menu.id === this.state.menu).endpoint, item)
         .then(response => {
           this.setState({
             openSnackbar: true,
@@ -175,11 +108,22 @@ class App extends React.Component {
           this.setState({
             openSnackbar: true,
             variantSnackbar: "error",
-            messageSnackbar: "Sorry, something went wrong. Please try again!",
+            messageSnackbar:
+              error.response.data.message ||
+              "Sorry, something went wrong. Please try again!",
             loading: false
           });
         });
     });
+  };
+
+  componentDidMount() {
+    this.fetch(this.state.menu);
+  }
+
+  handleSelectMenu = menu => {
+    this.setState({ menu });
+    this.fetch(menu);
   };
 
   handleCloseSnackbar = () => this.setState({ openSnackbar: false });
