@@ -10,7 +10,7 @@ import {
   LocalLaundryService
 } from "@material-ui/icons";
 import { Header, Drawer } from "./components/layouts";
-import { Table, Snackbar } from "./components";
+import { Table, Snackbar, Modal } from "./components";
 import { fetchItems, updateItem, addItem, deleteItem } from "./api";
 import { pages } from "./consts";
 
@@ -128,6 +128,13 @@ class App extends React.Component {
 
   handleCloseSnackbar = () => this.setState({ openSnackbar: false });
 
+  handleOpenModal = () => {
+    console.log("openModal");
+    this.setState({ openModal: true });
+  };
+
+  handleCloseModal = () => this.setState({ openModal: false });
+
   render() {
     const { classes } = this.props;
     const currentPage = pages.find(page => page.id === this.state.page);
@@ -150,6 +157,12 @@ class App extends React.Component {
             oderBy={currentPage.orderBy}
             data={this.state.data}
             handleDeleteItems={this.handleDeleteItems}
+            handleOpenModal={this.handleOpenModal}
+          />
+          <Modal
+            open={this.state.openModal}
+            handleCloseModal={this.handleCloseModal}
+            editMode={false}
           />
           {this.state.openSnackbar && (
             <Snackbar

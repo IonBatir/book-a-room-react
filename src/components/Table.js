@@ -136,7 +136,13 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes, pageLabel, handleDeleteItems } = props;
+  const {
+    numSelected,
+    classes,
+    pageLabel,
+    handleDeleteItems,
+    handleOpenModal
+  } = props;
 
   return (
     <Toolbar
@@ -177,7 +183,7 @@ let EnhancedTableToolbar = props => {
           </div>
         ) : (
           <Tooltip title="Add">
-            <IconButton aria-label="Add">
+            <IconButton aria-label="Add" onClick={() => handleOpenModal()}>
               <Add />
             </IconButton>
           </Tooltip>
@@ -293,7 +299,7 @@ class EnhancedTable extends React.Component {
   };
 
   render() {
-    const { classes, label, rows } = this.props;
+    const { classes, label, rows, handleOpenModal } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -303,6 +309,7 @@ class EnhancedTable extends React.Component {
         <EnhancedTableToolbar
           pageLabel={label}
           handleDeleteItems={() => this.handleDeleteItems()}
+          handleOpenModal={handleOpenModal}
           numSelected={selected.length}
         />
         <div className={classes.tableWrapper}>
