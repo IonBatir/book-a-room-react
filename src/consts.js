@@ -4,7 +4,7 @@ export const SITE_NAME = "Book A Room";
 
 export const DRAWER_WIDTH = 70;
 
-export const menus = [
+export const pages = [
   {
     id: 0,
     endpoint: "hotel",

@@ -12,7 +12,7 @@ import {
 import { Header, Drawer } from "./components/layouts";
 import { Table, Snackbar } from "./components";
 import { fetchItems, updateItem, addItem, deleteItem } from "./api";
-import { menus } from "./consts";
+import { pages } from "./consts";
 
 const styles = theme => ({
   root: {
@@ -42,18 +42,18 @@ class App extends React.Component {
       variantSnackbar: "",
       messageSnackbar: "",
       loading: false,
-      menu: 0,
+      page: 0,
       data: []
     };
   }
 
-  fetch = menuId => {
+  fetch = pageId => {
     this.setState({ loading: true });
-    const currentMenu = menus.find(menu => menu.id === menuId);
-    fetchItems(currentMenu.endpoint)
+    const currentPage = pages.find(page => page.id === pageId);
+    fetchItems(currentPage.endpoint)
       .then(response => {
         let data;
-        switch (currentMenu.id) {
+        switch (currentPage.id) {
           case 0:
             data = response.hotels.map(hotel => ({
               id: hotel.id,
@@ -94,7 +94,7 @@ class App extends React.Component {
   handleDeleteItems = items => {
     items.forEach(item => {
       this.setState({ loading: true });
-      deleteItem(menus.find(menu => menu.id === this.state.menu).endpoint, item)
+      deleteItem(pages.find(page => page.id === this.state.page).endpoint, item)
         .then(response => {
           this.setState({
             openSnackbar: true,
@@ -118,26 +118,36 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.fetch(this.state.menu);
+    this.fetch(this.state.page);
   }
 
-  handleSelectMenu = menu => {
-    this.setState({ menu });
-    this.fetch(menu);
+  handleSelectPage = page => {
+    this.setState({ page });
+    this.fetch(page);
   };
 
   handleCloseSnackbar = () => this.setState({ openSnackbar: false });
 
   render() {
     const { classes } = this.props;
+    const currentPage = pages.find(page => page.id === this.state.page);
     return (
       <div className={classes.root}>
         <Header />
-        <Drawer menus={menus} handleSelectMenu={this.handleSelectMenu} />
+        <Drawer
+          pages={pages.map(page => ({
+            id: page.id,
+            label: page.label,
+            icon: page.icon
+          }))}
+          handleSelectPage={this.handleSelectPage}
+        />
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Table
-            menu={menus.find(menu => menu.id === this.state.menu)}
+            label={currentPage.label}
+            rows={currentPage.rows}
+            oderBy={currentPage.orderBy}
             data={this.state.data}
             handleDeleteItems={this.handleDeleteItems}
           />

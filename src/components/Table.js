@@ -136,7 +136,7 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes, menuLabel, handleDeleteItems } = props;
+  const { numSelected, classes, pageLabel, handleDeleteItems } = props;
 
   return (
     <Toolbar
@@ -151,7 +151,7 @@ let EnhancedTableToolbar = props => {
           </Typography>
         ) : (
           <Typography variant="h6" id="tableTitle">
-            {menuLabel}
+            {pageLabel}
           </Typography>
         )}
       </div>
@@ -212,7 +212,7 @@ class EnhancedTable extends React.Component {
     super(props);
     this.state = {
       order: "asc",
-      orderBy: props.menu.orderBy,
+      orderBy: props.orderBy,
       selected: [],
       data: props.data,
       page: 0,
@@ -222,7 +222,7 @@ class EnhancedTable extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     return props.data !== state.data
-      ? { data: props.data, orderBy: props.menu.orderBy }
+      ? { data: props.data, orderBy: props.orderBy }
       : null;
   }
 
@@ -293,7 +293,7 @@ class EnhancedTable extends React.Component {
   };
 
   render() {
-    const { classes, menu } = this.props;
+    const { classes, label, rows } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -301,7 +301,7 @@ class EnhancedTable extends React.Component {
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar
-          menuLabel={menu.label}
+          pageLabel={label}
           handleDeleteItems={() => this.handleDeleteItems()}
           numSelected={selected.length}
         />
@@ -314,7 +314,7 @@ class EnhancedTable extends React.Component {
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
               rowCount={data.length}
-              rows={menu.rows}
+              rows={rows}
             />
             <TableBody>
               {stableSort(data, getSorting(order, orderBy))
@@ -343,7 +343,7 @@ class EnhancedTable extends React.Component {
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={menu.rows.length + 1} />
+                  <TableCell colSpan={rows.length + 1} />
                 </TableRow>
               )}
             </TableBody>
