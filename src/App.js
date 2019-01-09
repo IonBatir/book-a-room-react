@@ -163,6 +163,7 @@ class App extends React.Component {
             open={this.state.openModal}
             handleCloseModal={this.handleCloseModal}
             editMode={false}
+            fields={currentPage.fields}
           />
           {this.state.openSnackbar && (
             <Snackbar

@@ -52,7 +52,7 @@ class Modal extends React.Component {
   };
 
   render() {
-    const { classes, editMode, open } = this.props,
+    const { classes, editMode, open, fields } = this.props,
       { form } = this.state;
     return (
       <React.Fragment>
@@ -71,13 +71,24 @@ class Modal extends React.Component {
               Please {editMode ? "edit" : "fill"} the form below.
             </DialogContentText>
             <form className={classes.root}>
-              <TextField
-                className={classes.formControl}
-                id="title"
-                label="Title"
-                onChange={this.handleChange("title")}
-                margin="normal"
-              />
+              {fields.map(field => {
+                switch (field.type) {
+                  case "number":
+                    return (
+                      
+                    )
+                  case "string":
+                    return (
+                      <TextField
+                        className={classes.formControl}
+                        id={field.id}
+                        label={field.label}
+                        onChange={this.handleChange(field.id)}
+                        margin="normal"
+                      />
+                    );
+                }
+              })}
               {/* <FormControl className={classes.formControl} margin="normal">
                 <InputLabel htmlFor="muscle-simple">Muscle</InputLabel>
                 <Select
@@ -95,15 +106,6 @@ class Modal extends React.Component {
                   ))}
                 </Select>
               </FormControl> */}
-              <TextField
-                className={classes.formControl}
-                id="description"
-                label="Description"
-                multiline
-                rowsMax={4}
-                onChange={this.handleChange("description")}
-                margin="normal"
-              />
             </form>
           </DialogContent>
           <DialogActions>

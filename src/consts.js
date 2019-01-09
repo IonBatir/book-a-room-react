@@ -33,6 +33,18 @@ export const pages = [
         label: "Facilities"
       }
     ],
+    fields: [
+      { id: "name", label: "Name", type: "string" },
+      { id: "stars", label: "Stars", type: "number" },
+      { id: "floors", label: "Floors", type: "number" },
+      { id: "address", label: "Address", type: "string" },
+      { id: "city", label: "City", type: "options", options: [] },
+      { id: "restaurant", label: "Restaurant", type: "checkbox" },
+      { id: "wifi", label: "Wifi", type: "checkbox" },
+      { id: "carHire", label: "Car Hire", type: "checkbox" },
+      { id: "parking", label: "Parking", type: "checkbox" },
+      { id: "laundry", label: "Laundry", type: "checkbox" }
+    ],
     orderBy: "name"
   },
   {
