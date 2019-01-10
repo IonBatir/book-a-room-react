@@ -38,7 +38,12 @@ export const pages = [
       { id: "stars", label: "Stars", type: "number" },
       { id: "floors", label: "Floors", type: "number" },
       { id: "address", label: "Address", type: "string" },
-      { id: "city", label: "City", type: "options", options: [] },
+      {
+        id: "city",
+        label: "City",
+        type: "options",
+        options: [{ id: 0, label: "Chișinău" }, { id: 1, label: "Oradea" }]
+      },
       { id: "restaurant", label: "Restaurant", type: "checkbox" },
       { id: "wifi", label: "Wifi", type: "checkbox" },
       { id: "carHire", label: "Car Hire", type: "checkbox" },

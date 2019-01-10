@@ -7,9 +7,6 @@ import {
   DialogContentText,
   DialogActions,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -30,13 +27,14 @@ class Modal extends React.Component {
     this.state = props.item ? { form: props.item } : { form: {} };
   }
 
-  handleChange = name => event =>
+  handleChange = name => event => {
     this.setState({
       form: {
         ...this.state.form,
         [name]: event.target.value
       }
     });
+  };
 
   handleSubmit = () => {
     const { form } = this.state;
@@ -75,37 +73,52 @@ class Modal extends React.Component {
                 switch (field.type) {
                   case "number":
                     return (
-                      
-                    )
+                      <TextField
+                        className={classes.formControl}
+                        key={field.id}
+                        id={field.id}
+                        label={field.label}
+                        value={form[field.id]}
+                        type="number"
+                        onChange={this.handleChange(field.id)}
+                        margin="normal"
+                      />
+                    );
                   case "string":
                     return (
                       <TextField
                         className={classes.formControl}
+                        key={field.id}
                         id={field.id}
+                        value={form[field.id]}
                         label={field.label}
                         onChange={this.handleChange(field.id)}
                         margin="normal"
                       />
                     );
+                  case "options":
+                    return (
+                      <TextField
+                        select
+                        className={classes.formControl}
+                        key={field.id}
+                        id={field.id}
+                        label={field.label}
+                        value={form[field.id]}
+                        onChange={this.handleChange(field.id)}
+                        margin="normal"
+                      >
+                        {field.options.map(option => (
+                          <MenuItem key={option.id} value={option.id}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    );
+                  default:
+                    return null;
                 }
               })}
-              {/* <FormControl className={classes.formControl} margin="normal">
-                <InputLabel htmlFor="muscle-simple">Muscle</InputLabel>
-                <Select
-                  value={exercise.muscle}
-                  onChange={this.handleChange("muscle")}
-                  inputProps={{
-                    name: "muscle",
-                    id: "muscle-simple"
-                  }}
-                >
-                  {muscles.map(muscle => (
-                    <MenuItem key={muscle} value={muscle}>
-                      {muscle}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl> */}
             </form>
           </DialogContent>
           <DialogActions>
