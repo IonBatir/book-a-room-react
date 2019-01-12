@@ -43,7 +43,8 @@ class App extends React.Component {
       messageSnackbar: "",
       loading: false,
       page: 0,
-      data: []
+      data: [],
+      editItem: ""
     };
   }
 
@@ -92,14 +93,15 @@ class App extends React.Component {
   };
 
   handleAddItem = form => {
+    this.setState({ loading: true });
     const currentPage = pages.find(page => page.id === this.state.page);
     let newItem = {};
     switch (currentPage.id) {
       case 0:
         newItem = {
           name: form.name,
-          nr_stars: form.stars,
-          nr_floors: form.floors,
+          nr_stars: form.nr_stars,
+          nr_floors: form.nr_floors,
           description: "",
           address: form.address,
           city_id: form.city.id,
@@ -113,7 +115,6 @@ class App extends React.Component {
       default:
         return null;
     }
-    this.setState({ loading: true });
     addItem(currentPage.endpoint, newItem)
       .then(response => {
         this.setState({
@@ -122,7 +123,7 @@ class App extends React.Component {
           messageSnackbar: response.message,
           loading: false
         });
-        this.fetch();
+        this.fetch(currentPage.id);
       })
       .catch(error => {
         this.setState({
@@ -136,16 +137,21 @@ class App extends React.Component {
       });
   };
 
+  handleStartEditing = item => {
+    this.setState({ editItem: item[0], openModal: true });
+  };
+
   handleEditItem = form => {
-    const currentPage = pages.find(page => page.id === this.state.page);
     this.setState({ loading: true });
+    const currentPage = pages.find(page => page.id === this.state.page);
     let updatedItem = {};
     switch (currentPage.id) {
       case 0:
         updatedItem = {
+          id: this.state.editItem,
           name: form.name,
-          nr_stars: form.stars,
-          nr_floors: form.floors,
+          nr_stars: form.nr_stars,
+          nr_floors: form.nr_floors,
           description: "",
           address: form.address,
           city_id: form.city.id,
@@ -165,9 +171,10 @@ class App extends React.Component {
           openSnackbar: true,
           variantSnackbar: "success",
           messageSnackbar: response.message,
-          loading: false
+          loading: false,
+          editItem: ""
         });
-        this.fetch();
+        this.fetch(currentPage.id);
       })
       .catch(error => {
         this.setState({
@@ -176,15 +183,17 @@ class App extends React.Component {
           messageSnackbar:
             error.response.data.message ||
             "Sorry, something went wrong. Please try again!",
-          loading: false
+          loading: false,
+          editItem: ""
         });
       });
   };
 
   handleDeleteItems = items => {
+    const currentPage = pages.find(page => page.id === this.state.page);
     items.forEach(item => {
       this.setState({ loading: true });
-      deleteItem(pages.find(page => page.id === this.state.page).endpoint, item)
+      deleteItem(currentPage.endpoint, item)
         .then(response => {
           this.setState({
             openSnackbar: true,
@@ -192,7 +201,7 @@ class App extends React.Component {
             messageSnackbar: response.message,
             loading: false
           });
-          this.fetch();
+          this.fetch(currentPage.id);
         })
         .catch(error => {
           this.setState({
@@ -225,6 +234,25 @@ class App extends React.Component {
   render() {
     const { classes } = this.props;
     const currentPage = pages.find(page => page.id === this.state.page);
+    const selectedItem = this.state.data.find(
+      item => item.id === this.state.editItem
+    );
+    let editedItem;
+    if (selectedItem) {
+      switch (currentPage.id) {
+        case 0:
+          editedItem = {
+            ...selectedItem,
+            facilities: [],
+            city: currentPage.fields
+              .find(field => field.id === "city")
+              .options.find(city => city.label === selectedItem.city)
+          };
+          break;
+        default:
+          return null;
+      }
+    }
     return (
       <div className={classes.root}>
         <Header />
@@ -243,6 +271,7 @@ class App extends React.Component {
             rows={currentPage.rows}
             orderBy={currentPage.orderBy}
             data={this.state.data}
+            handleStartEditing={this.handleStartEditing}
             handleDeleteItems={this.handleDeleteItems}
             handleOpenModal={this.handleOpenModal}
           />
@@ -251,7 +280,7 @@ class App extends React.Component {
             handleCloseModal={this.handleCloseModal}
             addItem={this.handleAddItem}
             editItem={this.handleEditItem}
-            editMode={false}
+            item={editedItem}
             fields={currentPage.fields}
           />
           {this.state.openSnackbar && (

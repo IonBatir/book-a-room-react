@@ -57,8 +57,8 @@ export const pages = [
           { id: 4, label: "Laundry", value: "laundry" }
         ]
       },
-      { id: "stars", label: "Stars", type: "number" },
-      { id: "floors", label: "Floors", type: "number" }
+      { id: "nr_stars", label: "Stars", type: "number" },
+      { id: "nr_floors", label: "Floors", type: "number" }
     ],
     orderBy: "name"
   },

@@ -24,7 +24,17 @@ const styles = () => ({
 class Modal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = props.item ? { form: props.item } : { form: {} };
+    this.state = { form: {}, loaded: false, editMode: false };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    return props.item && !state.loaded
+      ? {
+          form: props.item,
+          loaded: true,
+          editMode: true
+        }
+      : null;
   }
 
   handleChange = name => event =>
@@ -38,10 +48,9 @@ class Modal extends React.Component {
   handleSubmit = () => {
     const { form } = this.state;
 
-    this.props.addItem(form);
-    // this.props.editMode
-    //   ? this.props.editExercise(form, this.props.form.id)
-    //   : this.props.addExercise(form);
+    this.state.editMode
+      ? this.props.editItem(form)
+      : this.props.addExercise(form);
     this.props.handleCloseModal();
   };
 
@@ -58,8 +67,8 @@ class Modal extends React.Component {
   };
 
   render() {
-    const { classes, editMode, open, fields } = this.props,
-      { form } = this.state;
+    const { classes, open, fields } = this.props,
+      { form, editMode } = this.state;
     return (
       <React.Fragment>
         <Dialog

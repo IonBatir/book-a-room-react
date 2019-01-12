@@ -140,6 +140,7 @@ let EnhancedTableToolbar = props => {
     numSelected,
     classes,
     pageLabel,
+    handleStartEditing,
     handleDeleteItems,
     handleOpenModal
   } = props;
@@ -167,7 +168,10 @@ let EnhancedTableToolbar = props => {
           <div>
             {numSelected === 1 && (
               <Tooltip title="Edit">
-                <IconButton aria-label="Edit">
+                <IconButton
+                  aria-label="Edit"
+                  onClick={() => handleStartEditing()}
+                >
                   <Edit />
                 </IconButton>
               </Tooltip>
@@ -293,6 +297,11 @@ class EnhancedTable extends React.Component {
     return row;
   };
 
+  handleStartEditing = () => {
+    this.props.handleStartEditing(this.state.selected);
+    this.setState({ selected: [] });
+  };
+
   handleDeleteItems = () => {
     this.props.handleDeleteItems(this.state.selected);
     this.setState({ selected: [] });
@@ -308,7 +317,8 @@ class EnhancedTable extends React.Component {
       <Paper className={classes.root}>
         <EnhancedTableToolbar
           pageLabel={label}
-          handleDeleteItems={() => this.handleDeleteItems()}
+          handleDeleteItems={this.handleDeleteItems}
+          handleStartEditing={this.handleStartEditing}
           handleOpenModal={handleOpenModal}
           numSelected={selected.length}
         />
