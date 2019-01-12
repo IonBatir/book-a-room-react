@@ -128,10 +128,7 @@ class App extends React.Component {
 
   handleCloseSnackbar = () => this.setState({ openSnackbar: false });
 
-  handleOpenModal = () => {
-    console.log("openModal");
-    this.setState({ openModal: true });
-  };
+  handleOpenModal = () => this.setState({ openModal: true });
 
   handleCloseModal = () => this.setState({ openModal: false });
 
@@ -154,14 +151,16 @@ class App extends React.Component {
           <Table
             label={currentPage.label}
             rows={currentPage.rows}
-            oderBy={currentPage.orderBy}
+            orderBy={currentPage.orderBy}
             data={this.state.data}
             handleDeleteItems={this.handleDeleteItems}
             handleOpenModal={this.handleOpenModal}
           />
           <Modal
             open={this.state.openModal}
+            currentPage={currentPage}
             handleCloseModal={this.handleCloseModal}
+            addItem={addItem}
             editMode={false}
             fields={currentPage.fields}
           />
