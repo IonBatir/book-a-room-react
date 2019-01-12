@@ -28,18 +28,18 @@ class Modal extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    return (props.item && !state.loaded) ||
-      (props.item && props.item.id !== state.form.id)
+    return props.item && !state.loaded
       ? {
           form: props.item,
           loaded: true,
           editMode: true
         }
-      : null;
+      : { form: {}, loaded: false, editMode: false };
   }
 
   handleChange = name => event =>
     this.setState({
+      ...this.state,
       form: {
         ...this.state.form,
         [name]: event.target ? event.target.value : event

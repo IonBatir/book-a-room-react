@@ -92,6 +92,8 @@ class App extends React.Component {
       });
   };
 
+  handleStartAdding = () => this.setState({ editItem: "", openModal: true });
+
   handleAddItem = form => {
     this.setState({ loading: true });
     const currentPage = pages.find(page => page.id === this.state.page);
@@ -273,7 +275,7 @@ class App extends React.Component {
             data={this.state.data}
             handleStartEditing={this.handleStartEditing}
             handleDeleteItems={this.handleDeleteItems}
-            handleOpenModal={this.handleOpenModal}
+            handleStartAdding={this.handleStartAdding}
           />
           <Modal
             open={this.state.openModal}

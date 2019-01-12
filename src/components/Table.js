@@ -142,7 +142,7 @@ let EnhancedTableToolbar = props => {
     pageLabel,
     handleStartEditing,
     handleDeleteItems,
-    handleOpenModal
+    handleStartAdding
   } = props;
 
   return (
@@ -187,7 +187,7 @@ let EnhancedTableToolbar = props => {
           </div>
         ) : (
           <Tooltip title="Add">
-            <IconButton aria-label="Add" onClick={() => handleOpenModal()}>
+            <IconButton aria-label="Add" onClick={() => handleStartAdding()}>
               <Add />
             </IconButton>
           </Tooltip>
@@ -308,7 +308,7 @@ class EnhancedTable extends React.Component {
   };
 
   render() {
-    const { classes, label, rows, handleOpenModal } = this.props;
+    const { classes, label, rows, handleStartAdding } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -319,7 +319,7 @@ class EnhancedTable extends React.Component {
           pageLabel={label}
           handleDeleteItems={this.handleDeleteItems}
           handleStartEditing={this.handleStartEditing}
-          handleOpenModal={handleOpenModal}
+          handleStartAdding={handleStartAdding}
           numSelected={selected.length}
         />
         <div className={classes.tableWrapper}>
