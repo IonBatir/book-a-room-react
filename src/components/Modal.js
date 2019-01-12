@@ -28,7 +28,8 @@ class Modal extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    return props.item && !state.loaded
+    return (props.item && !state.loaded) ||
+      (props.item && props.item.id !== state.form.id)
       ? {
           form: props.item,
           loaded: true,
