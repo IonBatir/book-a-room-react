@@ -91,6 +91,96 @@ class App extends React.Component {
       });
   };
 
+  handleAddItem = form => {
+    const currentPage = pages.find(page => page.id === this.state.page);
+    let newItem = {};
+    switch (currentPage.id) {
+      case 0:
+        newItem = {
+          name: form.name,
+          nr_stars: form.stars,
+          nr_floors: form.floors,
+          description: "",
+          address: form.address,
+          city_id: form.city.id,
+          restaurant: form.facilities.find(item => item.id === 0) ? "1" : "0",
+          wifi: form.facilities.find(item => item.id === 1) ? "1" : "0",
+          car_hire: form.facilities.find(item => item.id === 2) ? "1" : "0",
+          parking: form.facilities.find(item => item.id === 3) ? "1" : "0",
+          laundry: form.facilities.find(item => item.id === 4) ? "1" : "0"
+        };
+        break;
+      default:
+        return null;
+    }
+    this.setState({ loading: true });
+    addItem(currentPage.endpoint, newItem)
+      .then(response => {
+        this.setState({
+          openSnackbar: true,
+          variantSnackbar: "success",
+          messageSnackbar: response.message,
+          loading: false
+        });
+        this.fetch();
+      })
+      .catch(error => {
+        this.setState({
+          openSnackbar: true,
+          variantSnackbar: "error",
+          messageSnackbar:
+            error.response.data.message ||
+            "Sorry, something went wrong. Please try again!",
+          loading: false
+        });
+      });
+  };
+
+  handleEditItem = form => {
+    const currentPage = pages.find(page => page.id === this.state.page);
+    this.setState({ loading: true });
+    let updatedItem = {};
+    switch (currentPage.id) {
+      case 0:
+        updatedItem = {
+          name: form.name,
+          nr_stars: form.stars,
+          nr_floors: form.floors,
+          description: "",
+          address: form.address,
+          city_id: form.city.id,
+          restaurant: form.facilities.find(item => item.id === 0) ? "1" : "0",
+          wifi: form.facilities.find(item => item.id === 1) ? "1" : "0",
+          car_hire: form.facilities.find(item => item.id === 2) ? "1" : "0",
+          parking: form.facilities.find(item => item.id === 3) ? "1" : "0",
+          laundry: form.facilities.find(item => item.id === 4) ? "1" : "0"
+        };
+        break;
+      default:
+        return null;
+    }
+    updateItem(currentPage.endpoint, updatedItem)
+      .then(response => {
+        this.setState({
+          openSnackbar: true,
+          variantSnackbar: "success",
+          messageSnackbar: response.message,
+          loading: false
+        });
+        this.fetch();
+      })
+      .catch(error => {
+        this.setState({
+          openSnackbar: true,
+          variantSnackbar: "error",
+          messageSnackbar:
+            error.response.data.message ||
+            "Sorry, something went wrong. Please try again!",
+          loading: false
+        });
+      });
+  };
+
   handleDeleteItems = items => {
     items.forEach(item => {
       this.setState({ loading: true });
@@ -158,9 +248,9 @@ class App extends React.Component {
           />
           <Modal
             open={this.state.openModal}
-            currentPage={currentPage}
             handleCloseModal={this.handleCloseModal}
-            addItem={addItem}
+            addItem={this.handleAddItem}
+            editItem={this.handleEditItem}
             editMode={false}
             fields={currentPage.fields}
           />

@@ -27,36 +27,18 @@ class Modal extends React.Component {
     this.state = props.item ? { form: props.item } : { form: {} };
   }
 
-  handleChange = name => event => {
+  handleChange = name => event =>
     this.setState({
       form: {
         ...this.state.form,
         [name]: event.target ? event.target.value : event
       }
     });
-    console.log(this.state.form);
-  };
 
   handleSubmit = () => {
     const { form } = this.state;
-    const { currentPage } = this.props;
-    let newItem = {};
-    console.log(form);
-    switch (currentPage.id) {
-      case 0:
-        newItem = {
-          name: form.name,
-          nr_stars: form.stars,
-          nr_floors: form.floors,
-          address: form.address,
-          city_id: form.city
-        };
 
-        break;
-      default:
-        return null;
-    }
-    this.props.addItem(this.props.currentPage.endpoint, newItem);
+    this.props.addItem(form);
     // this.props.editMode
     //   ? this.props.editExercise(form, this.props.form.id)
     //   : this.props.addExercise(form);
@@ -66,6 +48,13 @@ class Modal extends React.Component {
   handleCloseModal = () => {
     this.setState({ form: {} });
     this.props.handleCloseModal();
+  };
+
+  checkFields = () => {
+    for (let field of this.props.fields) {
+      if (typeof this.state.form[field.id] === "undefined") return true;
+    }
+    return false;
   };
 
   render() {
@@ -146,7 +135,11 @@ class Modal extends React.Component {
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.handleSubmit()} color="primary">
+            <Button
+              onClick={() => this.handleSubmit()}
+              color="primary"
+              disabled={this.checkFields()}
+            >
               {editMode ? "Edit" : "Add"}
             </Button>
           </DialogActions>
