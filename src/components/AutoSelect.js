@@ -14,11 +14,12 @@ import { emphasize } from "@material-ui/core/styles/colorManipulator";
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
-    height: 250
+    width: "100%",
+    marginTop: 20
   },
   input: {
     display: "flex",
+    width: "100%",
     padding: 0
   },
   valueContainer: {
@@ -183,12 +184,11 @@ const components = {
 const IntegrationReactSelect = ({
   classes,
   theme,
-  id,
   options,
   value,
   label,
   multi,
-  handleChange
+  onChange
 }) => {
   const selectStyles = {
     input: base => ({
@@ -208,7 +208,7 @@ const IntegrationReactSelect = ({
           options={options}
           components={components}
           value={value}
-          onChange={handleChange(id)}
+          onChange={onChange}
           placeholder={label}
           isMulti={multi}
         />

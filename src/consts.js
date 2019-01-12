@@ -35,20 +35,30 @@ export const pages = [
     ],
     fields: [
       { id: "name", label: "Name", type: "string" },
-      { id: "stars", label: "Stars", type: "number" },
-      { id: "floors", label: "Floors", type: "number" },
-      { id: "address", label: "Address", type: "string" },
       {
         id: "city",
         label: "City",
-        type: "options",
-        options: [{ id: 0, label: "Chișinău" }, { id: 1, label: "Oradea" }]
+        type: "select",
+        options: [
+          { id: 0, label: "Chișinău", value: "chisinau" },
+          { id: 1, label: "Oradea", value: "oradea" }
+        ]
       },
-      { id: "restaurant", label: "Restaurant", type: "checkbox" },
-      { id: "wifi", label: "Wifi", type: "checkbox" },
-      { id: "carHire", label: "Car Hire", type: "checkbox" },
-      { id: "parking", label: "Parking", type: "checkbox" },
-      { id: "laundry", label: "Laundry", type: "checkbox" }
+      { id: "address", label: "Address", type: "string" },
+      {
+        id: "facilities",
+        label: "Facilities",
+        type: "multi-select",
+        options: [
+          { id: 0, label: "Restaurant", value: "restaurant" },
+          { id: 1, label: "Wifi", value: "wifi" },
+          { id: 2, label: "Car Hire", value: "car_hire" },
+          { id: 3, label: "Parking", value: "parking" },
+          { id: 4, label: "Laundry", value: "laundry" }
+        ]
+      },
+      { id: "stars", label: "Stars", type: "number" },
+      { id: "floors", label: "Floors", type: "number" }
     ],
     orderBy: "name"
   },

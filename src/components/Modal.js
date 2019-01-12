@@ -6,9 +6,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  TextField,
-  MenuItem
+  TextField
 } from "@material-ui/core";
+import { AutoSelect } from "./";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
@@ -31,16 +31,35 @@ class Modal extends React.Component {
     this.setState({
       form: {
         ...this.state.form,
-        [name]: event.target.value
+        [name]: event.target ? event.target.value : event
       }
     });
+    console.log(this.state.form);
   };
 
   handleSubmit = () => {
     const { form } = this.state;
-    this.props.editMode
-      ? this.props.editExercise(form, this.props.form.id)
-      : this.props.addExercise(form);
+    const { currentPage } = this.props;
+    let newItem = {};
+    console.log(form);
+    switch (currentPage.id) {
+      case 0:
+        newItem = {
+          name: form.name,
+          nr_stars: form.stars,
+          nr_floors: form.floors,
+          address: form.address,
+          city_id: form.city
+        };
+
+        break;
+      default:
+        return null;
+    }
+    this.props.addItem(this.props.currentPage.endpoint, newItem);
+    // this.props.editMode
+    //   ? this.props.editExercise(form, this.props.form.id)
+    //   : this.props.addExercise(form);
     this.props.handleCloseModal();
   };
 
@@ -96,24 +115,29 @@ class Modal extends React.Component {
                         margin="normal"
                       />
                     );
-                  case "options":
+                  case "select":
                     return (
-                      <TextField
-                        select
-                        className={classes.formControl}
+                      <AutoSelect
                         key={field.id}
                         id={field.id}
                         label={field.label}
                         value={form[field.id]}
                         onChange={this.handleChange(field.id)}
-                        margin="normal"
-                      >
-                        {field.options.map(option => (
-                          <MenuItem key={option.id} value={option.id}>
-                            {option.label}
-                          </MenuItem>
-                        ))}
-                      </TextField>
+                        multi={false}
+                        options={field.options}
+                      />
+                    );
+                  case "multi-select":
+                    return (
+                      <AutoSelect
+                        key={field.id}
+                        id={field.id}
+                        label={field.label}
+                        value={form[field.id]}
+                        onChange={this.handleChange(field.id)}
+                        multi
+                        options={field.options}
+                      />
                     );
                   default:
                     return null;
