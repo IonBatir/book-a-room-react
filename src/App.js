@@ -109,6 +109,18 @@ class App extends React.Component {
             });
             data = response.reviews;
             break;
+          case 3:
+            fetchItems("room").then(response => {
+              currentPage.fields.find(
+                field => field.id === "room"
+              ).options = response.rooms.map(room => ({
+                id: room.id,
+                label: room.number,
+                value: room.number
+              }));
+            });
+            data = response.bookings;
+            break;
           default:
             data = response;
         }
@@ -161,6 +173,13 @@ class App extends React.Component {
           ...form,
           hotel_id: form.hotel.id,
           customer_id: form.customer.id
+        };
+        break;
+      case 3:
+        newItem = {
+          ...form,
+          customer_id: form.customer.id,
+          room_id: form.room.id
         };
         break;
       default:
@@ -225,6 +244,13 @@ class App extends React.Component {
           ...form,
           hotel_id: form.hotel.id,
           customer_id: form.customer.id
+        };
+        break;
+      case 3:
+        updatedItem = {
+          ...form,
+          customer_id: form.customer.id,
+          room_id: form.room.id
         };
         break;
       default:
@@ -336,6 +362,19 @@ class App extends React.Component {
               .options.find(
                 customer => customer.label === selectedItem.customer
               )
+          };
+          break;
+        case 3:
+          editedItem = {
+            ...selectedItem,
+            customer: currentPage.fields
+              .find(field => field.id === "customer")
+              .options.find(
+                customer => customer.label === selectedItem.customer
+              ),
+            room: currentPage.fields
+              .find(field => field.id === "room")
+              .options.find(room => room.label === selectedItem.room)
           };
           break;
         default:

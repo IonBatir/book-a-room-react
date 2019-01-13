@@ -1,4 +1,4 @@
-import { LocationCity, Hotel, RateReview } from "@material-ui/icons";
+import { LocationCity, Hotel, RateReview, ListAlt } from "@material-ui/icons";
 
 export const SITE_NAME = "Book A Room";
 
@@ -165,6 +165,73 @@ export const pages = [
       { id: "review", label: "Review", type: "string" },
       { id: "mark", label: "Mark", type: "number" },
       { id: "date", label: "Date", type: "date" }
+    ],
+    orderBy: "hotel"
+  },
+  {
+    id: 3,
+    endpoint: "booking",
+    label: "Bookings",
+    icon: ListAlt,
+    rows: [
+      {
+        id: "customer",
+        numeric: false,
+        disablePadding: true,
+        label: "Customer"
+      },
+      {
+        id: "room",
+        numeric: false,
+        disablePadding: false,
+        label: "Room"
+      },
+      { id: "date", numeric: false, disablePadding: false, label: "Date" },
+      {
+        id: "check_in",
+        numeric: true,
+        disablePadding: false,
+        label: "CheckIn"
+      },
+      {
+        id: "check_out",
+        numeric: false,
+        disablePadding: false,
+        label: "CheckOut"
+      }
+    ],
+    fields: [
+      {
+        id: "customer",
+        label: "Customer",
+        type: "select",
+        options: [
+          {
+            id: "7dcceb32-794a-4190-b3dc-1558344f1a34",
+            label: "Ion Batîr",
+            value: "Ion Batîr"
+          },
+          {
+            id: "9f4d9ed1-a338-47cd-80f2-def8ac1dfb35",
+            label: "Bill Gates",
+            value: "Bill Gates"
+          },
+          {
+            id: "9b3cedf4-7f7f-46ca-95f2-c84b3d2eeb00",
+            label: "Linus Torvalds",
+            value: "Linus Torvalds"
+          },
+          {
+            id: "903cfeee-cdab-4d6f-8945-94c3bf641730",
+            label: "Steve Jobs",
+            value: "Steve Jobs"
+          }
+        ]
+      },
+      { id: "room", label: "Room", type: "select", options: [] },
+      { id: "date", label: "Date", type: "date" },
+      { id: "check_in", label: "CheckIn", type: "date" },
+      { id: "check_out", label: "CheckOut", type: "date" }
     ],
     orderBy: "hotel"
   }
