@@ -164,7 +164,7 @@ export const pages = [
       },
       { id: "review", label: "Review", type: "string" },
       { id: "mark", label: "Mark", type: "number" },
-      { id: "date", label: "Date", type: "string" }
+      { id: "date", label: "Date", type: "date" }
     ],
     orderBy: "hotel"
   }
