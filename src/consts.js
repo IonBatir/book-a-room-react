@@ -17,7 +17,7 @@ export const pages = [
         id: "nr_floors",
         numeric: true,
         disablePadding: false,
-        label: "Floors"
+        label: "Floor"
       },
       {
         id: "address",
@@ -39,10 +39,7 @@ export const pages = [
         id: "city",
         label: "City",
         type: "select",
-        options: [
-          { id: 0, label: "Chișinău", value: "chisinau" },
-          { id: 1, label: "Oradea", value: "oradea" }
-        ]
+        options: []
       },
       { id: "address", label: "Address", type: "string" },
       {
@@ -72,7 +69,50 @@ export const pages = [
       { id: "type", numeric: false, disablePadding: false, label: "Type" },
       { id: "number", numeric: false, disablePadding: false, label: "Number" },
       { id: "nr_floor", numeric: true, disablePadding: false, label: "Floor" },
-      { id: "price", numeric: true, disablePadding: false, label: "Price" }
+      { id: "price", numeric: true, disablePadding: false, label: "Price/Day" }
+    ],
+    fields: [
+      { id: "hotel", label: "Hotel", type: "select", options: [] },
+      {
+        id: "type",
+        label: "Type",
+        type: "select",
+        options: [
+          {
+            id: "e9fdbe02-c7d2-4d46-a665-71596c3ff778",
+            label: "Superior",
+            value: "Superior"
+          },
+          {
+            id: "2e65dd83-2ba9-471a-9bb7-4cce3895c034",
+            label: "Twin",
+            value: "Twin"
+          },
+          {
+            id: "fbdcb566-dbf0-46da-b7cb-94e168654276",
+            label: "Triple",
+            value: "Triple"
+          },
+          {
+            id: "ab9ecf84-06b6-402c-a45d-2dce43a64822",
+            label: "Premier",
+            value: "Premier"
+          },
+          {
+            id: "ae08f0de-e210-412f-9d37-402c9817efa1",
+            label: "Deluxe",
+            value: "Deluxe"
+          },
+          {
+            id: "a611a1f7-51bb-41f6-9ce5-c2c44cab7698",
+            label: "Studio",
+            value: "Studio"
+          }
+        ]
+      },
+      { id: "floor", label: "Floor", type: "number" },
+      { id: "number", label: "Room Number", type: "string" },
+      { id: "price_per_day", label: "Price/Day", type: "number" }
     ],
     orderBy: "hotel"
   },
@@ -92,6 +132,39 @@ export const pages = [
       { id: "review", numeric: false, disablePadding: false, label: "Review" },
       { id: "mark", numeric: true, disablePadding: false, label: "Mark" },
       { id: "date", numeric: false, disablePadding: false, label: "Date" }
+    ],
+    fields: [
+      { id: "hotel", label: "Hotel", type: "select", options: [] },
+      {
+        id: "customer",
+        label: "Customer",
+        type: "select",
+        options: [
+          {
+            id: "7dcceb32-794a-4190-b3dc-1558344f1a34",
+            label: "Ion Batîr",
+            value: "Ion Batîr"
+          },
+          {
+            id: "9f4d9ed1-a338-47cd-80f2-def8ac1dfb35",
+            label: "Bill Gates",
+            value: "Bill Gates"
+          },
+          {
+            id: "9b3cedf4-7f7f-46ca-95f2-c84b3d2eeb00",
+            label: "Linus Torvalds",
+            value: "Linus Torvalds"
+          },
+          {
+            id: "903cfeee-cdab-4d6f-8945-94c3bf641730",
+            label: "Steve Jobs",
+            value: "Steve Jobs"
+          }
+        ]
+      },
+      { id: "review", label: "Review", type: "string" },
+      { id: "mark", label: "Mark", type: "number" },
+      { id: "date", label: "Date", type: "string" }
     ],
     orderBy: "hotel"
   }

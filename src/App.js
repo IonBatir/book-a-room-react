@@ -56,6 +56,17 @@ class App extends React.Component {
         let data;
         switch (currentPage.id) {
           case 0:
+            fetchItems("city")
+              .then(response => {
+                currentPage.fields.find(
+                  field => field.id === "city"
+                ).options = response.cities.map(city => ({
+                  id: city.id,
+                  label: city.name,
+                  value: city.name
+                }));
+              })
+              .catch(error => console.log(error));
             data = response.hotels.map(hotel => ({
               id: hotel.id,
               name: hotel.name,
@@ -73,6 +84,30 @@ class App extends React.Component {
                 </React.Fragment>
               )
             }));
+            break;
+          case 1:
+            fetchItems("hotel").then(response => {
+              currentPage.fields.find(
+                field => field.id === "hotel"
+              ).options = response.hotels.map(hotel => ({
+                id: hotel.id,
+                label: hotel.name,
+                value: hotel.name
+              }));
+            });
+            data = response.rooms;
+            break;
+          case 2:
+            fetchItems("hotel").then(response => {
+              currentPage.fields.find(
+                field => field.id === "hotel"
+              ).options = response.hotels.map(hotel => ({
+                id: hotel.id,
+                label: hotel.name,
+                value: hotel.name
+              }));
+            });
+            data = response.reviews;
             break;
           default:
             data = response;
@@ -112,6 +147,20 @@ class App extends React.Component {
           car_hire: form.facilities.find(item => item.id === 2) ? "1" : "0",
           parking: form.facilities.find(item => item.id === 3) ? "1" : "0",
           laundry: form.facilities.find(item => item.id === 4) ? "1" : "0"
+        };
+        break;
+      case 1:
+        newItem = {
+          ...form,
+          hotel_id: form.hotel.id,
+          type_id: form.type.id
+        };
+        break;
+      case 2:
+        newItem = {
+          ...form,
+          hotel_id: form.hotel.id,
+          customer_id: form.customer.id
         };
         break;
       default:
@@ -162,6 +211,20 @@ class App extends React.Component {
           car_hire: form.facilities.find(item => item.id === 2) ? "1" : "0",
           parking: form.facilities.find(item => item.id === 3) ? "1" : "0",
           laundry: form.facilities.find(item => item.id === 4) ? "1" : "0"
+        };
+        break;
+      case 1:
+        updatedItem = {
+          ...form,
+          hotel_id: form.hotel.id,
+          type_id: form.type.id
+        };
+        break;
+      case 2:
+        updatedItem = {
+          ...form,
+          hotel_id: form.hotel.id,
+          customer_id: form.customer.id
         };
         break;
       default:
@@ -249,6 +312,30 @@ class App extends React.Component {
             city: currentPage.fields
               .find(field => field.id === "city")
               .options.find(city => city.label === selectedItem.city)
+          };
+          break;
+        case 1:
+          editedItem = {
+            ...selectedItem,
+            hotel: currentPage.fields
+              .find(field => field.id === "hotel")
+              .options.find(hotel => hotel.label === selectedItem.hotel),
+            type: currentPage.fields
+              .find(field => field.id === "type")
+              .options.find(type => type.label === selectedItem.type)
+          };
+          break;
+        case 2:
+          editedItem = {
+            ...selectedItem,
+            hotel: currentPage.fields
+              .find(field => field.id === "hotel")
+              .options.find(hotel => hotel.label === selectedItem.hotel),
+            customer: currentPage.fields
+              .find(field => field.id === "customer")
+              .options.find(
+                customer => customer.label === selectedItem.customer
+              )
           };
           break;
         default:
