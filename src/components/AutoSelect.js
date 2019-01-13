@@ -206,6 +206,12 @@ const IntegrationReactSelect = ({
           classes={classes}
           styles={selectStyles}
           options={options}
+          textFieldProps={{
+            label: label,
+            InputLabelProps: {
+              shrink: true
+            }
+          }}
           components={components}
           value={value}
           onChange={onChange}
