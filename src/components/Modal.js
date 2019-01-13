@@ -28,18 +28,18 @@ class Modal extends React.Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    return props.item && !state.loaded
-      ? {
-          form: props.item,
-          loaded: true,
-          editMode: true
-        }
-      : { form: {}, loaded: false, editMode: false };
+    if (props.item && !state.loaded)
+      return {
+        form: props.item,
+        loaded: true,
+        editMode: true
+      };
+    if (!props.item && state.loaded) return { editMode: false, loaded: false };
+    return null;
   }
 
   handleChange = name => event =>
     this.setState({
-      ...this.state,
       form: {
         ...this.state.form,
         [name]: event.target ? event.target.value : event
@@ -49,9 +49,7 @@ class Modal extends React.Component {
   handleSubmit = () => {
     const { form } = this.state;
 
-    this.state.editMode
-      ? this.props.editItem(form)
-      : this.props.addExercise(form);
+    this.state.editMode ? this.props.editItem(form) : this.props.addItem(form);
     this.props.handleCloseModal();
   };
 
