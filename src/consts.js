@@ -1,6 +1,6 @@
 import { LocationCity, Hotel, RateReview, ListAlt } from "@material-ui/icons";
 
-export const SITE_NAME = "Book A Room";
+export const SITE_NAME = "Book A Room - Control Panel";
 
 export const DRAWER_WIDTH = 70;
 
@@ -67,8 +67,8 @@ export const pages = [
     rows: [
       { id: "hotel", numeric: false, disablePadding: true, label: "Hotel" },
       { id: "type", numeric: false, disablePadding: false, label: "Type" },
-      { id: "number", numeric: false, disablePadding: false, label: "Number" },
       { id: "nr_floor", numeric: true, disablePadding: false, label: "Floor" },
+      { id: "room", numeric: false, disablePadding: false, label: "Room" },
       { id: "price", numeric: true, disablePadding: false, label: "Price/Day" }
     ],
     fields: [
