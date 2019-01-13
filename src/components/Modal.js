@@ -87,6 +87,22 @@ class Modal extends React.Component {
             <form className={classes.root}>
               {fields.map(field => {
                 switch (field.type) {
+                  case "date":
+                    return (
+                      <TextField
+                        className={classes.formControl}
+                        key={field.id}
+                        id={field.id}
+                        label={field.label}
+                        InputLabelProps={{
+                          shrink: true
+                        }}
+                        value={form[field.id]}
+                        type="date"
+                        onChange={this.handleChange(field.id)}
+                        margin="normal"
+                      />
+                    );
                   case "number":
                     return (
                       <TextField
