@@ -233,6 +233,6 @@ export const pages = [
       { id: "check_in", label: "CheckIn", type: "date" },
       { id: "check_out", label: "CheckOut", type: "date" }
     ],
-    orderBy: "hotel"
+    orderBy: "customer"
   }
 ];
