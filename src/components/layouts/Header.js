@@ -57,7 +57,7 @@ const styles = theme => ({
   }
 });
 
-const Header = ({ classes }) => (
+const Header = ({ classes, handleSearch, searchValue }) => (
   <AppBar position="fixed" className={classes.appBar}>
     <Toolbar>
       <Typography variant="h6" color="inherit" noWrap>
@@ -70,6 +70,8 @@ const Header = ({ classes }) => (
         </div>
         <InputBase
           placeholder="Search…"
+          value={searchValue}
+          onChange={handleSearch}
           classes={{
             root: classes.inputRoot,
             input: classes.inputInput

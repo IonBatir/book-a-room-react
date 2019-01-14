@@ -44,9 +44,14 @@ class App extends React.Component {
       loading: false,
       page: 0,
       data: [],
-      editItem: ""
+      editItem: "",
+      search: ""
     };
   }
+
+  search = event => {
+    this.setState({ search: event.target.value });
+  };
 
   fetch = pageId => {
     this.setState({ loading: true });
@@ -325,6 +330,7 @@ class App extends React.Component {
   render() {
     const { classes } = this.props;
     const currentPage = pages.find(page => page.id === this.state.page);
+    console.log(currentPage);
     const selectedItem = this.state.data.find(
       item => item.id === this.state.editItem
     );
@@ -381,9 +387,10 @@ class App extends React.Component {
           return null;
       }
     }
+
     return (
       <div className={classes.root}>
-        <Header />
+        <Header handleSearch={this.search} searchValue={this.state.search} />
         <Drawer
           pages={pages.map(page => ({
             id: page.id,
@@ -398,7 +405,11 @@ class App extends React.Component {
             label={currentPage.label}
             rows={currentPage.rows}
             orderBy={currentPage.orderBy}
-            data={this.state.data}
+            data={this.state.data.filter(item =>
+              item[currentPage.orderBy]
+                ? item[currentPage.orderBy].includes(this.state.search)
+                : false
+            )}
             handleStartEditing={this.handleStartEditing}
             handleDeleteItems={this.handleDeleteItems}
             handleStartAdding={this.handleStartAdding}
